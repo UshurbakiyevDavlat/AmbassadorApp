@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM php:8.0-fpm-alpine
 
 RUN docker-php-ext-install pdo pdo_mysql
 RUN curl -sS https://getcomposer.org/installer | php -- \
@@ -6,6 +6,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 
 WORKDIR /app
 COPY . .
+
 RUN composer install
 
-CMD php artisan serve --host=0.0.0.0
+# Expose the container's port 9000 for PHP-FPM
+EXPOSE 9000
+
+# Start PHP-FPM
+CMD ["php-fpm"]
