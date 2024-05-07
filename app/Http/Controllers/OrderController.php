@@ -104,8 +104,6 @@ class OrderController extends Controller
         $order->complete = 1;
         $order->save();
 
-        event(new OrderCompletedEvent($order));
-
         return [
             'message' => 'success'
         ];
