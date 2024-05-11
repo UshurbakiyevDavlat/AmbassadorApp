@@ -67,6 +67,16 @@ return [
             'block_for' => null,
         ],
 
+        'kafka' => [
+            'driver' => 'kafka',
+            'bootstrap.servers' => env('KAFKA_BOOTSTRAP_SERVER'),
+            'security.protocol' => env('KAFKA_SECURITY_PROTOCOL'),
+            'sasl.mechanism' => env('KAFKA_SASL_MECHANISM'),
+            'sasl.username' => env('KAFKA_SASL_USERNAME'),
+            'sasl.password' => env('KAFKA_SASL_PASSWORD'),
+            'group.id' => env('KAFKA_GROUP_ID'),
+            'auto.offset.reset' => env('KAFKA_AUTO_RESET_OFFSET'),
+        ],
     ],
 
     /*

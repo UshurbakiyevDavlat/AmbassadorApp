@@ -3,32 +3,14 @@ services:
   backend:
     build: .
     ports:
-      - "9000:9000"
+      - "8000:8000"
     volumes:
       - .:/app
+    command: 'php artisan serve --host=0.0.0.0'
     depends_on:
       - db
     container_name: backend-ambassador
-    networks:
-      - ambassador_network
 
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    container_name: nginx-ambassador
-    restart: unless-stopped
-    ports:
-      - "8000:80"
-      - "8443:443"
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./public:/app/public
-      - ./storage/app/public:/app/storage/app/public
-    depends_on:
-      - backend
-    networks:
-      - ambassador_network
   db:
     image: mysql:8
     restart: always
@@ -41,17 +23,9 @@ services:
       - ./storage/dbdata:/var/lib/mysql
     ports:
       - "33066:3306"
-    networks:
-      - ambassador_network
 
   redis:
     image: redis
     container_name: redis-ambassador
     ports:
       - "6379:6379"
-    networks:
-      - ambassador_network
-
-networks:
-  ambassador_network:
-    driver: bridge
