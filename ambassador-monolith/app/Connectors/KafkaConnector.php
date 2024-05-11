@@ -8,6 +8,10 @@ use App\Queues\KafkaQueue;
 use Exception;
 use Illuminate\Queue\Connectors\ConnectorInterface;
 use Illuminate\Support\Facades\Log;
+use RdKafka\Conf;
+use RdKafka\KafkaConsumer;
+use RdKafka\Message;
+use RdKafka\Producer;
 
 class KafkaConnector implements ConnectorInterface
 {
@@ -21,7 +25,7 @@ class KafkaConnector implements ConnectorInterface
      */
     public function connect(array $config): KafkaQueue
     {
-        $conf = new \RdKafka\Conf();
+        $conf = new Conf();
 
         $conf->set('bootstrap.servers', $config['bootstrap.servers']);
         $conf->set('security.protocol', $config['security.protocol']);
@@ -35,7 +39,7 @@ class KafkaConnector implements ConnectorInterface
         $conf->set('sasl.password', $config['sasl.password']);
 
         $conf->setDrMsgCb(
-            function (\RdKafka\Producer $producer, \RdKafka\Message $message): void {
+            function (Producer $producer, Message $message): void {
                 if ($message->err !== RD_KAFKA_RESP_ERR_NO_ERROR) {
                     throw new Exception($message->errstr());
                 }
@@ -45,7 +49,7 @@ class KafkaConnector implements ConnectorInterface
         $conf->set('log_level', (string)LOG_DEBUG);
         $conf->set('debug', 'all');
         $conf->setLogCb(
-            function (\RdKafka\Producer $producer, int $level, string $facility, string $message): void {
+            function (Producer $producer, int $level, string $facility, string $message): void {
                 Log::debug('kafka debug', ['message' => $message]);
             }
         );
@@ -53,8 +57,8 @@ class KafkaConnector implements ConnectorInterface
         $conf->set('group.id', $config['group.id']);
         $conf->set('auto.offset.reset', $config['auto.offset.reset']);
 
-        $consumer = new \RdKafka\KafkaConsumer($conf);
-        $producer = new \RdKafka\Producer($conf);
+        $consumer = new KafkaConsumer($conf);
+        $producer = new Producer($conf);
 
         return new KafkaQueue($producer, $consumer);
     }
