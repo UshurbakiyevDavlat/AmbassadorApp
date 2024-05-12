@@ -6,6 +6,7 @@ namespace App\Queues;
 
 use Exception;
 use Illuminate\Queue\Queue;
+use RdKafka\TopicConf;
 
 class KafkaQueue extends Queue implements \Illuminate\Contracts\Queue\Queue
 {
@@ -14,6 +15,7 @@ class KafkaQueue extends Queue implements \Illuminate\Contracts\Queue\Queue
     private const MESSAGE_TIMEOUT = 30000;
     private const REQ_ACKS = -1;
     private const TOPIC = 'default';
+    private const PARTITION = 0;
 
     public function __construct(private $producer, private $consumer)
     {
@@ -34,13 +36,13 @@ class KafkaQueue extends Queue implements \Illuminate\Contracts\Queue\Queue
      */
     public function push($job, $data = '', $queue = null): void
     {
-        $topicConf = new \RdKafka\TopicConf();
+        $topicConf = new TopicConf();
         $topicConf->set('message.timeout.ms', (string)self::MESSAGE_TIMEOUT);
         $topicConf->set('request.required.acks', (string)self::REQ_ACKS);
         $topicConf->set('request.timeout.ms', (string)self::REQ_TIMEOUT);
 
         $topic = $this->producer->newTopic(self::TOPIC, $topicConf);
-        $topic->produce(RD_KAFKA_PARTITION_UA, 0, "Hello from monolith!");
+        $topic->produce(RD_KAFKA_PARTITION_UA, self::PARTITION, serialize($job));
         $this->producer->flush(static::REQ_TIMEOUT);
     }
 

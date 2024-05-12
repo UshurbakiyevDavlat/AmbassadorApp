@@ -3,13 +3,12 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProduceJob implements ShouldQueue
+class OrderCompletedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -18,9 +17,8 @@ class ProduceJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(private $data)
     {
-        //
     }
 
     /**
@@ -28,8 +26,8 @@ class ProduceJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
-
+        var_dump('there is a message from monolith app');
     }
 }
