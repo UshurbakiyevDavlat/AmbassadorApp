@@ -31,6 +31,9 @@ class ProducerCommand extends Command
     {
         $order = Order::find(1);
 
+        $order['ambassador_revenue'] = $order->ambassador_revenue;
+        $order['admin_revenue'] = $order->admin_revenue;
+
         OrderCompletedJob::dispatch($order->toArray());
     }
 }
