@@ -1,13 +1,17 @@
 {
-    "name": "laravel/laravel",
+    "name": "davlatbekushurbakiyev/ambassador-email-service",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Email service of ambassador app",
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "davlatbekushurbakiyev/kafka-queue": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -19,11 +23,18 @@
         "pestphp/pest-plugin-laravel": "^2.4",
         "spatie/laravel-ignition": "^2.4"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/UshurbakiyevDavlat/kafkaQueue-laravel-package.git"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Kafka\\": "vendor/davlatbekushurbakiyev/kafka-queue/src/"
         }
     },
     "autoload-dev": {
