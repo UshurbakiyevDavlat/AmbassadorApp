@@ -75,6 +75,7 @@ return [
             'sasl.username' => env('KAFKA_SASL_USERNAME'),
             'sasl.password' => env('KAFKA_SASL_PASSWORD'),
             'group.id' => env('KAFKA_GROUP_ID'),
+            'queue' => env('KAFKA_TOPIC'),
             'auto.offset.reset' => env('KAFKA_AUTO_RESET_OFFSET'),
         ],
     ],
