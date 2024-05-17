@@ -34,6 +34,6 @@ class ProducerCommand extends Command
         $order['ambassador_revenue'] = $order->ambassador_revenue;
         $order['admin_revenue'] = $order->admin_revenue;
 
-        OrderCompletedJob::dispatch($order->toArray());
+        OrderCompletedJob::dispatch($order->toArray())->onQueue('email_topic');
     }
 }

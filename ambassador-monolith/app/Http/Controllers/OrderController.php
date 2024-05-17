@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\OrderCompletedEvent;
 use App\Http\Resources\OrderResource;
+use App\Jobs\OrderCompletedJob;
 use App\Models\Link;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -82,6 +83,8 @@ class OrderController extends Controller
             $order->save();
 
             \DB::commit();
+
+            OrderCompletedJob::dispatch($order->toArray())->onQueue('email_topic');
 
             return $source;
         } catch (\Throwable $e) {
