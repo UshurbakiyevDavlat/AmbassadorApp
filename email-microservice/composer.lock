@@ -141,12 +141,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UshurbakiyevDavlat/kafkaQueue-laravel-package.git",
-                "reference": "3a2ca4ccee653ed5551004e905b0ed2f172356af"
+                "reference": "0b6204094f474dac1dc1ec14c4223195fc98d0e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UshurbakiyevDavlat/kafkaQueue-laravel-package/zipball/3a2ca4ccee653ed5551004e905b0ed2f172356af",
-                "reference": "3a2ca4ccee653ed5551004e905b0ed2f172356af",
+                "url": "https://api.github.com/repos/UshurbakiyevDavlat/kafkaQueue-laravel-package/zipball/0b6204094f474dac1dc1ec14c4223195fc98d0e1",
+                "reference": "0b6204094f474dac1dc1ec14c4223195fc98d0e1",
                 "shasum": ""
             },
             "require": {
@@ -171,7 +171,7 @@
                 "source": "https://github.com/UshurbakiyevDavlat/kafkaQueue-laravel-package/tree/main",
                 "issues": "https://github.com/UshurbakiyevDavlat/kafkaQueue-laravel-package/issues"
             },
-            "time": "2024-05-17T08:21:44+00:00"
+            "time": "2024-05-17T15:26:37+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
