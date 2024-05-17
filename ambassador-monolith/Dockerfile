@@ -1,4 +1,4 @@
-FROM php:8.0
+FROM php:8.2
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -22,4 +22,4 @@ RUN git clone https://github.com/confluentinc/librdkafka.git \
 
 WORKDIR /app
 COPY . .
-RUN composer install
+#RUN composer install
