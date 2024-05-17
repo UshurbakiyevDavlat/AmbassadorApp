@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed2a8cd8275eb6abb6dee68dc7f91310",
+    "content-hash": "d0e23f257a7fc00c64645530298bdf76",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -254,12 +254,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UshurbakiyevDavlat/kafkaQueue-laravel-package.git",
-                "reference": "fe608fdfc8a8dfb57dd259fcc259791e3810bed8"
+                "reference": "8c629dbcd087448af4ca4a930251d6b2a0ed64b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UshurbakiyevDavlat/kafkaQueue-laravel-package/zipball/fe608fdfc8a8dfb57dd259fcc259791e3810bed8",
-                "reference": "fe608fdfc8a8dfb57dd259fcc259791e3810bed8",
+                "url": "https://api.github.com/repos/UshurbakiyevDavlat/kafkaQueue-laravel-package/zipball/8c629dbcd087448af4ca4a930251d6b2a0ed64b9",
+                "reference": "8c629dbcd087448af4ca4a930251d6b2a0ed64b9",
                 "shasum": ""
             },
             "require": {
@@ -270,7 +270,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Davlatbekushurbakiyev\\KafkaQueue\\": "src/"
+                    "Kafka\\": "src/"
                 }
             },
             "authors": [
@@ -284,7 +284,7 @@
                 "source": "https://github.com/UshurbakiyevDavlat/kafkaQueue-laravel-package/tree/main",
                 "issues": "https://github.com/UshurbakiyevDavlat/kafkaQueue-laravel-package/issues"
             },
-            "time": "2024-05-17T07:27:11+00:00"
+            "time": "2024-05-17T07:44:12+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

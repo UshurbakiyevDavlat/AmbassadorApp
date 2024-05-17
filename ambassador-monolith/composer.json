@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "davlatbekushurbakiyev/ambassador-monolith",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "The ambassador monolith backend.",
     "keywords": [
         "framework",
         "laravel"

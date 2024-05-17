@@ -174,7 +174,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        \Davlatbekushurbakiyev\KafkaQueue\KafkaServiceProvider::class,
+        Kafka\KafkaServiceProvider::class,
     ],
 
     /*
