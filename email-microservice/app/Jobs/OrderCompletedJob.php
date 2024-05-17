@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Mail\Message;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class OrderCompletedJob implements ShouldQueue
 {
@@ -31,12 +32,12 @@ class OrderCompletedJob implements ShouldQueue
     {
         var_dump('sending email');
 
-        \Mail::send('admin', ['order' => $this->data], function (Message $message) {
+        Mail::send('admin', ['order' => $this->data], function (Message $message) {
             $message->subject('An Order has been completed');
             $message->to('admin@admin.com');
         });
 
-        \Mail::send('ambassador', ['order' => $this->data], function (Message $message) {
+        Mail::send('ambassador', ['order' => $this->data], function (Message $message) {
             $message->subject('An Order has been completed');
             $message->to($this->data['ambassador_email']);
         });
