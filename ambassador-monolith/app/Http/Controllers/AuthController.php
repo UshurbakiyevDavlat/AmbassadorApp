@@ -6,21 +6,33 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Services\UserService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $request)
+    public function __construct(private readonly UserService $service)
     {
-        $user = User::create(
-            $request->only('first_name', 'last_name', 'email')
+    }
+
+    /**
+     * Register method
+     *
+     * @param RegisterRequest $request
+     * @return \Illuminate\Http\Response|Application|ResponseFactory
+     */
+    public function register(RegisterRequest $request): \Illuminate\Http\Response|Application|ResponseFactory
+    {
+        // what about validation errors??
+        $user = $request->only('first_name', 'last_name', 'email', 'password')
             + [
-                'password' => \Hash::make($request->input('password')),
                 'is_admin' => $request->path() === 'api/admin/register' ? 1 : 0
-            ]
-        );
+            ];
+
+        $this->service->register($user);
 
         return response($user, Response::HTTP_CREATED);
     }
