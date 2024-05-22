@@ -15,7 +15,7 @@ class UserService extends ApiService
      */
     public function register(array $data): mixed
     {
-        $this->endpoint = 'host.docker.internal:8001/api';
+        $this->endpoint = config('services.internal.users.address') . '/api';
         return $this->post('register', $data);
     }
 }

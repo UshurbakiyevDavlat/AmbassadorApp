@@ -2,6 +2,9 @@ version: '3.9'
 services:
   backend:
     build: .
+    networks:
+      - default
+      - users
     ports:
       - "8000:8000"
     volumes:
@@ -15,6 +18,8 @@ services:
     image: mysql:8
     restart: always
     container_name: db-ambassador
+    networks:
+      - default
     environment:
       MYSQL_DATABASE: ambassador
       MYSQL_ROOT_PASSWORD: root
@@ -27,5 +32,14 @@ services:
   redis:
     image: redis
     container_name: redis-ambassador
+    networks:
+      - default
+
     ports:
       - "6379:6379"
+
+networks:
+  users:
+    external:
+      name: users
+  default:

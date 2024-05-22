@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'internal' => [
+        'users' => [
+            'address' => env('INTERNAL_USER_MS', 'users-backend-ambassador:8000')
+        ]
+    ]
 ];
