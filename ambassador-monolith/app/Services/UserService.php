@@ -7,6 +7,11 @@ namespace App\Services;
 class UserService extends ApiService
 {
 
+    public function __construct()
+    {
+        $this->endpoint = config('services.internal.users.address') . '/api';
+    }
+
     /**
      * Register user method
      *
@@ -15,7 +20,17 @@ class UserService extends ApiService
      */
     public function register(array $data): mixed
     {
-        $this->endpoint = config('services.internal.users.address') . '/api';
         return $this->post('register', $data);
+    }
+
+    /**
+     * Register user method
+     *
+     * @param array $data
+     * @return array|mixed
+     */
+    public function login(array $data): mixed
+    {
+        return $this->post('login', $data);
     }
 }

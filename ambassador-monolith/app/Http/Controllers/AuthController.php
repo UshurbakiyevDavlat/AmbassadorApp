@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
+use Auth;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -37,28 +39,25 @@ class AuthController extends Controller
         return response($user, Response::HTTP_CREATED);
     }
 
-    public function login(Request $request)
+    /**
+     * Login method
+     *
+     * @param Request $request
+     * @return Application|ResponseFactory|\Illuminate\Http\Response
+     * @throws Exception
+     */
+    public function login(Request $request): \Illuminate\Http\Response|Application|ResponseFactory
     {
-        if (!\Auth::attempt($request->only('email', 'password'))) {
-            return response([
-                'error' => 'invalid credentials'
-            ], Response::HTTP_UNAUTHORIZED);
+
+        $scope = $request->path() === 'api/admin/login' ? 'admin' : 'ambassador';
+        $data = $request->only('email', 'password') + compact('scope');
+        $response = $this->service->login($data);
+
+        if (!$response['jwt'] ?? true) {
+            throw new Exception("Jwt token wasn't been generated");
         }
 
-        $user = \Auth::user();
-
-        $adminLogin = $request->path() === 'api/admin/login';
-
-        if ($adminLogin && !$user->is_admin) {
-            return response([
-                'error' => 'Access Denied!'
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-
-        $scope = $adminLogin ? 'admin' : 'ambassador';
-        $jwt = $user->createToken('token', [$scope])->plainTextToken;
-
-        $cookie = cookie('jwt', $jwt, 60 * 24); // 1 day
+        $cookie = cookie('jwt', $response['jwt'], 60 * 24); // 1 day
 
         return response([
             'message' => 'success'
