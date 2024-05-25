@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Http;
 
 abstract class ApiService
@@ -9,15 +10,35 @@ abstract class ApiService
     public string $endpoint;
 
     /**
+     * Request helper method
+     *
+     * @throws Exception
+     */
+    private function request(string $method, string $path, array $data = [])
+    {
+        $response = Http::acceptJson()->withHeaders([
+            'Authorization' => 'Bearer ' . request()->cookie('jwt')
+        ])
+            ->$method("{$this->endpoint}/$path", $data);
+
+        if ($response->ok()) {
+            return $response->json();
+        }
+
+        throw new Exception($response->body());
+    }
+
+    /**
      * Post method for api call
      *
      * @param string $path
      * @param array $data
      * @return array|mixed
+     * @throws Exception
      */
     protected function post(string $path, array $data): mixed
     {
-        return Http::post("{$this->endpoint}/$path", $data)->json();
+        return $this->request('post', $path, $data);
     }
 
     /**
@@ -25,13 +46,35 @@ abstract class ApiService
      *
      * @param string $path
      * @return array|mixed
+     * @throws Exception
      */
     protected function get(string $path): mixed
     {
-        return Http::acceptJson()->withHeaders([
-            'Authorization' => 'Bearer ' . request()->cookie('jwt')
-        ])
-            ->get("{$this->endpoint}/$path")
-            ->json();
+        return $this->request('get', $path);
+    }
+
+    /**
+     * Put method for api call
+     *
+     * @param string $path
+     * @param array $data
+     * @return array|mixed
+     * @throws Exception
+     */
+    protected function put(string $path, array $data): mixed
+    {
+        return $this->request('put', $path, $data);
+    }
+
+    /**
+     * Delete method for api call
+     *
+     * @param string $path
+     * @return array|mixed
+     * @throws Exception
+     */
+    protected function delete(string $path): mixed
+    {
+        return $this->request('delete', $path);
     }
 }
