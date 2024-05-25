@@ -33,4 +33,14 @@ class UserService extends ApiService
     {
         return $this->post('login', $data);
     }
+
+    /**
+     * Get authenticated user method
+     *
+     * @return array|mixed
+     */
+    public function user(): mixed
+    {
+        return $this->get('user');
+    }
 }

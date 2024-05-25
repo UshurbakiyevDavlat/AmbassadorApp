@@ -11,12 +11,27 @@ abstract class ApiService
     /**
      * Post method for api call
      *
-     * @param $path
-     * @param $data
+     * @param string $path
+     * @param array $data
      * @return array|mixed
      */
-    public function post($path, $data): mixed
+    protected function post(string $path, array $data): mixed
     {
         return Http::post("{$this->endpoint}/$path", $data)->json();
+    }
+
+    /**
+     * Get method for api call
+     *
+     * @param string $path
+     * @return array|mixed
+     */
+    protected function get(string $path): mixed
+    {
+        return Http::acceptJson()->withHeaders([
+            'Authorization' => 'Bearer ' . request()->cookie('jwt')
+        ])
+            ->get("{$this->endpoint}/$path")
+            ->json();
     }
 }

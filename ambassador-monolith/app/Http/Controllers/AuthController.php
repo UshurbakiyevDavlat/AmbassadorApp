@@ -7,11 +7,11 @@ use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
-use Auth;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -64,11 +64,23 @@ class AuthController extends Controller
         ])->withCookie($cookie);
     }
 
-    public function user(Request $request)
+    /**
+     * Get authenticated user method
+     *
+     * @return
+     * @throws Exception
+     */
+    public function user()
     {
-        $user = $request->user();
+        try {
+            $user = $this->service->user();
+        } catch (Exception $exception) {
+            Log::error('user handling error', ['info' => $exception->getMessage()]);
+            throw new Exception('User getting exception');
+        }
 
-        return new UserResource($user);
+        return $user;
+//        return UserResource::make($user);
     }
 
     public function logout()
