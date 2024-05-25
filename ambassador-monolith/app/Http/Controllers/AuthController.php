@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\UpdatePasswordRequest;
-use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -25,6 +24,7 @@ class AuthController extends Controller
      *
      * @param RegisterRequest $request
      * @return \Illuminate\Http\Response|Application|ResponseFactory
+     * @throws Exception
      */
     public function register(RegisterRequest $request): \Illuminate\Http\Response|Application|ResponseFactory
     {
@@ -83,6 +83,11 @@ class AuthController extends Controller
 //        return UserResource::make($user);
     }
 
+    /**
+     * Logout method
+     *
+     * @return Application|ResponseFactory|\Illuminate\Http\Response
+     */
     public function logout()
     {
         $cookie = \Cookie::forget('jwt');
@@ -92,7 +97,13 @@ class AuthController extends Controller
         ])->withCookie($cookie);
     }
 
-    public function updateInfo(UpdateInfoRequest $request)
+    /**
+     * Update info method
+     *
+     * @param UpdateInfoRequest $request
+     * @return \Illuminate\Http\Response|Application|ResponseFactory
+     */
+    public function updateInfo(UpdateInfoRequest $request): \Illuminate\Http\Response|Application|ResponseFactory
     {
         $user = $request->user();
 
@@ -101,7 +112,13 @@ class AuthController extends Controller
         return response($user, Response::HTTP_ACCEPTED);
     }
 
-    public function updatePassword(UpdatePasswordRequest $request)
+    /**
+     * Update password method
+     *
+     * @param UpdatePasswordRequest $request
+     * @return \Illuminate\Http\Response|Application|ResponseFactory
+     */
+    public function updatePassword(UpdatePasswordRequest $request): \Illuminate\Http\Response|Application|ResponseFactory
     {
         $user = $request->user();
 

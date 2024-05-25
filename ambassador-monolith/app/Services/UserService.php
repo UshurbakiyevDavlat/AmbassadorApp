@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use Exception;
+
 class UserService extends ApiService
 {
 
@@ -17,6 +19,7 @@ class UserService extends ApiService
      *
      * @param array $data
      * @return array|mixed
+     * @throws Exception
      */
     public function register(array $data): mixed
     {
@@ -28,6 +31,7 @@ class UserService extends ApiService
      *
      * @param array $data
      * @return array|mixed
+     * @throws Exception
      */
     public function login(array $data): mixed
     {
@@ -38,6 +42,7 @@ class UserService extends ApiService
      * Get authenticated user method
      *
      * @return array|mixed
+     * @throws Exception
      */
     public function user(): mixed
     {
