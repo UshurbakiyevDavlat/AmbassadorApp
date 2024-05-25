@@ -87,10 +87,12 @@ class AuthController extends Controller
      * Logout method
      *
      * @return Application|ResponseFactory|\Illuminate\Http\Response
+     * @throws Exception
      */
-    public function logout()
+    public function logout(): \Illuminate\Http\Response|Application|ResponseFactory
     {
         $cookie = \Cookie::forget('jwt');
+        $this->service->logout();
 
         return response([
             'message' => 'success'
@@ -102,13 +104,11 @@ class AuthController extends Controller
      *
      * @param UpdateInfoRequest $request
      * @return \Illuminate\Http\Response|Application|ResponseFactory
+     * @throws Exception
      */
     public function updateInfo(UpdateInfoRequest $request): \Illuminate\Http\Response|Application|ResponseFactory
     {
-        $user = $request->user();
-
-        $user->update($request->only('first_name', 'last_name', 'email'));
-
+        $user = $this->service->updateInfo($request->only('first_name', 'last_name', 'email'));
         return response($user, Response::HTTP_ACCEPTED);
     }
 
@@ -117,15 +117,11 @@ class AuthController extends Controller
      *
      * @param UpdatePasswordRequest $request
      * @return \Illuminate\Http\Response|Application|ResponseFactory
+     * @throws Exception
      */
     public function updatePassword(UpdatePasswordRequest $request): \Illuminate\Http\Response|Application|ResponseFactory
     {
-        $user = $request->user();
-
-        $user->update([
-            'password' => \Hash::make($request->input('password'))
-        ]);
-
+        $user = $this->service->updatePassword($request->input('password'));
         return response($user, Response::HTTP_ACCEPTED);
     }
 }

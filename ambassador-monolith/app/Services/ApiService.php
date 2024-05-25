@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 abstract class ApiService
 {
@@ -25,7 +26,7 @@ abstract class ApiService
             return $response->json();
         }
 
-        throw new Exception($response->body());
+        throw new HttpException($response->status(),$response->body());
     }
 
     /**

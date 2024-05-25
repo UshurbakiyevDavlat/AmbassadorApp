@@ -48,4 +48,37 @@ class UserService extends ApiService
     {
         return $this->get('user');
     }
+
+    /**
+     * Logout method
+     *
+     * @return array|mixed
+     * @throws Exception
+     */
+    public function logout(): mixed
+    {
+        return $this->post('logout', []);
+    }
+
+    /**
+     * Update info method
+     *
+     * @return array|mixed
+     * @throws Exception
+     */
+    public function updateInfo(array $info): mixed
+    {
+        return $this->put('users/info', $info);
+    }
+
+    /**
+     * Update password method
+     *
+     * @return array|mixed
+     * @throws Exception
+     */
+    public function updatePassword(string $password): mixed
+    {
+        return $this->put('users/password', ['password' => $password]);
+    }
 }
