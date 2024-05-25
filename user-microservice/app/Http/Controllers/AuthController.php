@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -67,5 +67,48 @@ class AuthController extends Controller
     public function user(Request $request): mixed
     {
         return $request->user();
+    }
+
+    /**
+     * Logout method
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        $request->user()->tokens()->delete();
+
+        return response()->json(['message' => 'success']);
+    }
+
+    /**
+     * Update info method
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|ResponseFactory
+     */
+    public function updateInfo(Request $request): \Illuminate\Http\Response|Application|ResponseFactory
+    {
+        $user = $request->user();
+        $user->update($request->only('first_name', 'last_name', 'email'));
+
+        return response($user);
+    }
+
+    /**
+     * Update password method
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|ResponseFactory
+     */
+    public function updatePassword(Request $request): \Illuminate\Http\Response|Application|ResponseFactory
+    {
+        $user = $request->user();
+        $user->update([
+            'password' => Hash::make($request->input('password'))
+        ]);
+
+        return response($user);
     }
 }

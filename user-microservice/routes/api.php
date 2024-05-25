@@ -16,4 +16,7 @@ Route::post('/login', [AuthController::class, 'login'])
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user'])->name('auth.user');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::put('/users/info', [AuthController::class, 'updateInfo'])->name('auth.update.info');
+    Route::put('/users/password', [AuthController::class, 'updatePassword'])->name('auth.update.password');
 });
