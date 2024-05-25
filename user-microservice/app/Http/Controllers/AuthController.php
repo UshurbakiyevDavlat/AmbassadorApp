@@ -57,4 +57,15 @@ class AuthController extends Controller
 
         return compact('jwt');
     }
+
+    /**
+     * Get authenticated user method
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function user(Request $request): mixed
+    {
+        return $request->user();
+    }
 }
