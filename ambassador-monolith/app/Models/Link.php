@@ -23,8 +23,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Link whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Link whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Link whereUserId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Order> $orders
+ * @property-read int|null $orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
+ * @property-read int|null $products_count
+ * @method static \Database\Factories\LinkFactory factory(...$parameters)
  * @mixin \Eloquent
- * @property-read \App\Models\User $user
  */
 class Link extends Model
 {

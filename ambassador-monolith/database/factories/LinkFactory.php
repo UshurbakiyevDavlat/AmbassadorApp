@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Link;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Random\RandomException;
 
 class LinkFactory extends Factory
 {
@@ -19,12 +19,13 @@ class LinkFactory extends Factory
      * Define the model's default state.
      *
      * @return array
+     * @throws RandomException
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'code' => $this->faker->slug,
-            'user_id' => User::inRandomOrder()->first()->id
+            'user_id' => random_int(1, 30)
         ];
     }
 }

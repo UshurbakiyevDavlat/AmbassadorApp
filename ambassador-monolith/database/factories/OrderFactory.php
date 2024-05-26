@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Link;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Random\RandomException;
 
 class OrderFactory extends Factory
 {
@@ -19,16 +20,17 @@ class OrderFactory extends Factory
      * Define the model's default state.
      *
      * @return array
+     * @throws RandomException
      */
-    public function definition()
+    public function definition(): array
     {
         /** @var Link $link */
         $link = Link::inRandomOrder()->first();
 
         return [
             'code' => $link->code,
-            'user_id' => $link->user->id,
-            'ambassador_email' => $link->user->email,
+            'user_id' => random_int(1,30),
+            'ambassador_email' => $this->faker->email,
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
