@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::put('/users/info', [AuthController::class, 'updateInfo'])->name('auth.update.info');
     Route::put('/users/password', [AuthController::class, 'updatePassword'])->name('auth.update.password');
+});
+
+Route::controller(UsersController::class)->group(function () {
+    Route::get('/users', 'index')->name('users.index');
+    Route::get('/users/{user}', 'show')->name('users.show');
 });
