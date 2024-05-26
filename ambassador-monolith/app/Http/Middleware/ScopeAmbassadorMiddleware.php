@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\ApiService;
+use App\Services\UserService;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -10,13 +12,15 @@ class ScopeAmbassadorMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
+     * @param Request $request
+     * @param Closure $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
-        if (!$request->user()->tokenCan('ambassador')) {
+        $response = app(UserService::class)->setRequest('get', 'scope/ambassador');
+
+        if (!$response->ok()) {
             abort(401, 'unauthorized');
         }
 

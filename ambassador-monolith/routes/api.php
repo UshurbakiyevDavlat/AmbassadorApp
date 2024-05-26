@@ -20,36 +20,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-function common(): void
+function common($scope): void
 {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
-    Route::get('user', [AuthController::class, 'user']);
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::put('users/info', [AuthController::class, 'updateInfo']);
-    Route::put('users/password', [AuthController::class, 'updatePassword']);
+
+    Route::middleware($scope)->group(function (){
+        Route::get('user', [AuthController::class, 'user']);
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::put('users/info', [AuthController::class, 'updateInfo']);
+        Route::put('users/password', [AuthController::class, 'updatePassword']);
+    });
 }
 
 //Admin
 Route::prefix('admin')->group(function () {
-    common();
+    common('scope.admin');
 
-    Route::get('ambassadors', [AmbassadorController::class, 'index']);
-    Route::get('users/{id}/links', [LinkController::class, 'index']);
-    Route::get('orders', [OrderController::class, 'index']);
-
-    Route::apiResource('products', ProductController::class);
+    Route::middleware('scope.admin')->group(function () {
+        Route::get('ambassadors', [AmbassadorController::class, 'index']);
+        Route::get('users/{id}/links', [LinkController::class, 'index']);
+        Route::get('orders', [OrderController::class, 'index']);
+        Route::apiResource('products', ProductController::class);
+    });
 });
 
 
 //Ambassador
 Route::prefix('ambassador')->group(function () {
-    common();
+    common('scope.ambassador');
 
     Route::get('products/frontend', [ProductController::class, 'frontend']);
     Route::get('products/backend', [ProductController::class, 'backend']);
 
-    Route::middleware(['auth:sanctum', 'scope.ambassador'])->group(function () {
+    Route::middleware('scope.ambassador')->group(function () {
         Route::post('links', [LinkController::class, 'store']);
         Route::get('stats', [StatsController::class, 'index']);
         Route::get('rankings', [StatsController::class, 'rankings']);
