@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -110,5 +111,21 @@ class AuthController extends Controller
         ]);
 
         return response($user);
+    }
+
+    /**
+     * Check either scope authorized to do actions.
+     *
+     * @param $scope
+     * @param Request $request
+     * @return string
+     */
+    public function scopeCan($scope, Request $request): string
+    {
+        if (!$request->user()->tokenCan($scope)) {
+            abort(401, 'unauthorized');
+        }
+
+        return 'ok';
     }
 }

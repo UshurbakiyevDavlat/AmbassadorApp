@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::put('/users/info', [AuthController::class, 'updateInfo'])->name('auth.update.info');
     Route::put('/users/password', [AuthController::class, 'updatePassword'])->name('auth.update.password');
+    Route::get('/scope/{scope}', [AuthController::class, 'scopeCan'])->name('auth.scope.can');
 });
 
 Route::controller(UsersController::class)->group(function () {
