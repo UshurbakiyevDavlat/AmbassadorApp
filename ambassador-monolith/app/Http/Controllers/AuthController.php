@@ -67,20 +67,19 @@ class AuthController extends Controller
     /**
      * Get authenticated user method
      *
-     * @return
+     * @return array|mixed
      * @throws Exception
      */
-    public function user()
+    public function user(): mixed
     {
         try {
-            $user = $this->service->user();
+            $user = $this->service->profile();
         } catch (Exception $exception) {
             Log::error('user handling error', ['info' => $exception->getMessage()]);
             throw new Exception('User getting exception');
         }
 
         return $user;
-//        return UserResource::make($user);
     }
 
     /**

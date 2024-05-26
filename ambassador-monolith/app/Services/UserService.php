@@ -44,7 +44,7 @@ class UserService extends ApiService
      * @return array|mixed
      * @throws Exception
      */
-    public function user(): mixed
+    public function profile(): mixed
     {
         return $this->get('user');
     }
@@ -80,5 +80,28 @@ class UserService extends ApiService
     public function updatePassword(string $password): mixed
     {
         return $this->put('users/password', ['password' => $password]);
+    }
+
+    /**
+     * Get all users
+     *
+     * @return array|mixed
+     * @throws Exception
+     */
+    public function users(): mixed
+    {
+        return $this->get('users');
+    }
+
+    /**
+     * Get user by id
+     *
+     * @param int $id
+     * @return array|mixed
+     * @throws Exception
+     */
+    public function user(int $id): mixed
+    {
+        return $this->get("user/$id");
     }
 }

@@ -4,19 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Events\ProductUpdatedEvent;
 use App\Models\Product;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Psr\SimpleCache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
-    public function index()
+    /**
+     * Index products method
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|array
+     */
+    public function index(): \Illuminate\Database\Eloquent\Collection|array
     {
         return Product::all();
     }
 
-    public function store(Request $request)
+    /**
+     * Store product method
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response|Application|ResponseFactory
+     */
+    public function store(Request $request): \Illuminate\Http\Response|Application|ResponseFactory
     {
         $product = Product::create($request->only('title', 'description', 'image', 'price'));
 
@@ -25,12 +39,25 @@ class ProductController extends Controller
         return response($product, Response::HTTP_CREATED);
     }
 
-    public function show(Product $product)
+    /**
+     * Show product method
+     *
+     * @param Product $product
+     * @return Product
+     */
+    public function show(Product $product): Product
     {
         return $product;
     }
 
-    public function update(Request $request, Product $product)
+    /**
+     * Update product method
+     *
+     * @param Request $request
+     * @param Product $product
+     * @return \Illuminate\Http\Response|Application|ResponseFactory
+     */
+    public function update(Request $request, Product $product): \Illuminate\Http\Response|Application|ResponseFactory
     {
         $product->update($request->only('title', 'description', 'image', 'price'));
 
@@ -39,7 +66,13 @@ class ProductController extends Controller
         return response($product, Response::HTTP_ACCEPTED);
     }
 
-    public function destroy(Product $product)
+    /**
+     * Destroy product method
+     *
+     * @param Product $product
+     * @return \Illuminate\Http\Response|Application|ResponseFactory
+     */
+    public function destroy(Product $product): \Illuminate\Http\Response|Application|ResponseFactory
     {
         $product->delete();
 
@@ -48,7 +81,13 @@ class ProductController extends Controller
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function frontend()
+    /**
+     * Get products for frontend method
+     *
+     * @return mixed
+     * @throws InvalidArgumentException
+     */
+    public function frontend(): mixed
     {
         if ($products = \Cache::get('products_frontend')) {
             return $products;
@@ -61,7 +100,13 @@ class ProductController extends Controller
         return $products;
     }
 
-    public function backend(Request $request)
+    /**
+     * Get products for backend method
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function backend(Request $request): array
     {
         $page = $request->input('page', 1);
 

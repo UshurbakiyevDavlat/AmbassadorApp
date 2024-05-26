@@ -2,28 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\OrderCompletedEvent;
 use App\Http\Resources\OrderResource;
 use App\Jobs\OrderCompletedJob;
 use App\Models\Link;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Services\UserService;
 use Cartalyst\Stripe\Stripe;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
+use Throwable;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function __construct(private readonly UserService $service)
+    {
+
+    }
+
+    /**
+     * Index orders method
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function index(): AnonymousResourceCollection
     {
         return OrderResource::collection(Order::with('orderItems')->get());
     }
 
-    public function store(Request $request)
+    /**
+     * Store order method
+     *
+     * @param Request $request
+     * @return Application|ResponseFactory|Response
+     * @throws Throwable
+     */
+    public function store(Request $request): Response|Application|ResponseFactory
     {
         if (!$link = Link::where('code', $request->input('code'))->first()) {
             abort(400, 'Invalid code');
         }
+
+        $user = $this->service->user($link->user_id);
 
         try {
             \DB::beginTransaction();
@@ -31,8 +55,8 @@ class OrderController extends Controller
             $order = new Order();
 
             $order->code = $link->code;
-            $order->user_id = $link->user->id;
-            $order->ambassador_email = $link->user->email;
+            $order->user_id = $link->user_id;
+            $order->ambassador_email = $user['email'];
             $order->first_name = $request->input('first_name');
             $order->last_name = $request->input('last_name');
             $order->email = $request->input('email');
@@ -87,7 +111,7 @@ class OrderController extends Controller
             OrderCompletedJob::dispatch($order->toArray())->onQueue('email_topic');
 
             return $source;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             \DB::rollBack();
 
             return response([
@@ -96,7 +120,13 @@ class OrderController extends Controller
         }
     }
 
-    public function confirm(Request $request)
+    /**
+     * Confirm order method
+     *
+     * @param Request $request
+     * @return array|Response|Application|ResponseFactory
+     */
+    public function confirm(Request $request): array|Response|Application|ResponseFactory
     {
         if (!$order = Order::where('transaction_id', $request->input('source'))->first()) {
             return response([

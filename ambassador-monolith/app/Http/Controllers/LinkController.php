@@ -5,22 +5,46 @@ namespace App\Http\Controllers;
 use App\Http\Resources\LinkResource;
 use App\Models\Link;
 use App\Models\LinkProduct;
+use App\Services\UserService;
+use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Str;
 
 class LinkController extends Controller
 {
-    public function index($id)
+    public function __construct(private readonly UserService $service)
+    {
+
+    }
+
+    /**
+     * Index links method
+     *
+     * @param $id
+     * @return AnonymousResourceCollection
+     */
+    public function index($id): AnonymousResourceCollection
     {
         $links = Link::with('orders')->where('user_id', $id)->get();
 
         return LinkResource::collection($links);
     }
 
-    public function store(Request $request)
+    /**
+     * Store links method
+     *
+     * @param Request $request
+     * @return Model|Link
+     * @throws Exception
+     */
+    public function store(Request $request): Model|Link
     {
+        $user = $this->service->profile();
+
         $link = Link::create([
-            'user_id' => $request->user()->id,
+            'user_id' => $user['id'],
             'code' => Str::random(6)
         ]);
 
@@ -34,8 +58,19 @@ class LinkController extends Controller
         return $link;
     }
 
-    public function show($code)
+    /**
+     * Show the link method
+     *
+     * @param string $code
+     * @return object|array
+     * @throws Exception
+     */
+    public function show(string $code): object|array
     {
-        return Link::with('user', 'products')->where('code', $code)->first();
+        $link = Link::with('products')->where('code', $code)->first();
+        $user = $this->service->user($link->user_id);
+        $link['user'] = $user;
+
+        return $link;
     }
 }

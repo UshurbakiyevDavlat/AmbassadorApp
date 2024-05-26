@@ -2,13 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Services\UserService;
+use Exception;
+use Illuminate\Support\Collection;
 
 class AmbassadorController extends Controller
 {
-    public function index()
+    public function __construct(private readonly UserService $service)
     {
-        return User::ambassadors()->get();
+
+    }
+
+    /**
+     * Get all users
+     *
+     * @return Collection
+     * @throws Exception
+     */
+    public function index(): Collection
+    {
+        $users = collect($this->service->users());
+        return $users->filter(fn($user) => $user['is_admin'] === 0)->values();
     }
 }
