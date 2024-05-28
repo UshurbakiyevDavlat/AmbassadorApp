@@ -1,13 +1,20 @@
 {
-    "name": "laravel/laravel",
+    "name": "davlatbekushurbakiyev/ambassador-checkout-service",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Checkout service for ambassador project.",
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0",
-        "laravel/tinker": "^2.9"
+        "laravel/sanctum": "^4.0",
+        "laravel/tinker": "^2.9",
+        "cartalyst/stripe": "^2.4",
+        "davlatbekushurbakiyev/kafka-queue": "dev-main",
+        "davlatbekushurbakiyev/user-ambassador-package": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -23,7 +30,9 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Kafka\\": "vendor/davlatbekushurbakiyev/kafka-queue/src/",
+            "Services\\": "vendor/davlatbekushurbakiyev/user-ambassador-package/src"
         }
     },
     "autoload-dev": {
@@ -53,6 +62,16 @@
             "dont-discover": []
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/UshurbakiyevDavlat/kafkaQueue-laravel-package.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/UshurbakiyevDavlat/user-ambassador-package.git"
+        }
+    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
