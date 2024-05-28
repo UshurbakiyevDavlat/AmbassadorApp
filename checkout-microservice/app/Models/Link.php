@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
  * @property-read int|null $products_count
  * @method static \Database\Factories\LinkFactory factory(...$parameters)
+ * @method static create(mixed $item)
  * @mixin \Eloquent
  */
 class Link extends Model

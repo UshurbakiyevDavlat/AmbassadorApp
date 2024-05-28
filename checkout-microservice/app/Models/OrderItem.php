@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereUpdatedAt($value)
  * @method static \Database\Factories\OrderItemFactory factory(...$parameters)
+ * @method static create(mixed $orderItem)
  * @mixin \Eloquent
  */
 class OrderItem extends Model

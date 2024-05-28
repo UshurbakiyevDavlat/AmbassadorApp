@@ -47,6 +47,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $order_items_count
  * @property-read mixed $ambassador_revenue
  * @method static \Database\Factories\OrderFactory factory(...$parameters)
+ * @method static create(mixed $item)
  * @mixin \Eloquent
  */
 class Order extends Model
