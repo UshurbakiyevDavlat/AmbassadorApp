@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  checkout_backend:
+    build: .
+    networks:
+      - checkout
+      - users
+    ports:
+      - "8002:8000"
+    volumes:
+      - .:/app
+    command: 'php artisan serve --host=0.0.0.0'
+    depends_on:
+      - checkout_db
+    container_name: checkout-backend-ambassador
+
+  checkout_db:
+    image: mysql:8
+    restart: always
+    container_name: checkout-db-ambassador
+    networks:
+      - checkout
+    environment:
+      MYSQL_DATABASE: checkout
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+    volumes:
+      - ./storage/dbdata:/var/lib/mysql
+
+networks:
+  users:
+    external:
+      name: users
+  checkout:
