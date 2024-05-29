@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|LinkProduct whereLinkId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LinkProduct whereProductId($value)
  * @method static create(mixed $item)
+ * @method static insert(mixed $linkProducts)
  * @mixin \Eloquent
  */
 class LinkProduct extends Model

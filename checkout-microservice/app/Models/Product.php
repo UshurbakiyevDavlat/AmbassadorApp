@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
  * @method static \Database\Factories\ProductFactory factory(...$parameters)
  * @method static create(mixed $item)
+ * @method static find(mixed $id)
  * @mixin \Eloquent
  */
 class Product extends Model
