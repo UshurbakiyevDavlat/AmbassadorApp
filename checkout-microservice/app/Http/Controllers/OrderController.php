@@ -8,8 +8,10 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use Cartalyst\Stripe\Stripe;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Services\UserService;
@@ -26,10 +28,10 @@ class OrderController extends Controller
      * Store order method
      *
      * @param Request $request
-     * @return Application|ResponseFactory|Response
-     * @throws Throwable
+     * @return array|JsonResponse
+     * @throws Exception
      */
-    public function store(Request $request): Response|Application|ResponseFactory
+    public function store(Request $request): JsonResponse|array
     {
         if (!$link = Link::where('code', $request->input('code'))->first()) {
             abort(400, 'Invalid code');
@@ -96,13 +98,16 @@ class OrderController extends Controller
 
             \DB::commit();
 
+            $order['admin_revenue'] = $order->admin_revenue;
+            $order['ambassador_revenue'] = $order->ambassador_revenue;
+
             OrderCompletedJob::dispatch($order->toArray())->onQueue('email_topic');
 
             return $source;
         } catch (Throwable $e) {
             \DB::rollBack();
 
-            return response([
+            return response()->json([
                 'error' => $e->getMessage()
             ], 400);
         }
