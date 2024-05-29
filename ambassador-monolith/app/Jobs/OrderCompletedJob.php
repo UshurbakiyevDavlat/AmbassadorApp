@@ -28,6 +28,5 @@ class OrderCompletedJob implements ShouldQueue
      */
     public function handle(): void
     {
-        var_dump('there is a message from monolith app');
     }
 }

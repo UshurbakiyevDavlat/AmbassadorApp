@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProductCreatedJob implements ShouldQueue
+class LinkCreatedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -30,5 +30,6 @@ class ProductCreatedJob implements ShouldQueue
      */
     public function handle()
     {
+        //
     }
 }

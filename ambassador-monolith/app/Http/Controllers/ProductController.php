@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\ProductUpdatedEvent;
 use App\Jobs\ProductCreatedJob;
+use App\Jobs\ProductDeletedJob;
+use App\Jobs\ProductUpdatedJob;
 use App\Models\Product;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -62,7 +64,7 @@ class ProductController extends Controller
     {
         $product->update($request->only('title', 'description', 'image', 'price'));
 
-        event(new ProductUpdatedEvent);
+        ProductUpdatedJob::dispatch($product->toArray())->onQueue('checkout_topic');
 
         return response($product, Response::HTTP_ACCEPTED);
     }
@@ -77,7 +79,7 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        event(new ProductUpdatedEvent);
+        ProductDeletedJob::dispatch(['id' => $product['id']])->onQueue('checkout_topic');
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
