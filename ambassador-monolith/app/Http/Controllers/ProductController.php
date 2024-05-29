@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\ProductUpdatedEvent;
+use App\Jobs\ProductCreatedJob;
 use App\Models\Product;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -34,7 +35,7 @@ class ProductController extends Controller
     {
         $product = Product::create($request->only('title', 'description', 'image', 'price'));
 
-        event(new ProductUpdatedEvent);
+        ProductCreatedJob::dispatch($product->toArray())->onQueue('checkout_topic');
 
         return response($product, Response::HTTP_CREATED);
     }
