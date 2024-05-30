@@ -1,9 +1,9 @@
 version: '3.9'
 services:
-  backend:
+  admin_backend:
     build: .
     networks:
-      - default
+      - admin
       - users
     ports:
       - "8000:8000"
@@ -11,15 +11,15 @@ services:
       - .:/app
     command: 'php artisan serve --host=0.0.0.0'
     depends_on:
-      - db
-    container_name: backend-ambassador
+      - admin_db
+    container_name: admin-backend
 
-  db:
+  admin_db:
     image: mysql:8
     restart: always
-    container_name: db-ambassador
+    container_name: admin_db
     networks:
-      - default
+      - admin
     environment:
       MYSQL_DATABASE: ambassador
       MYSQL_ROOT_PASSWORD: root
@@ -29,17 +29,8 @@ services:
     ports:
       - "33066:3306"
 
-  redis:
-    image: redis
-    container_name: redis-ambassador
-    networks:
-      - default
-
-    ports:
-      - "6379:6379"
-
 networks:
   users:
     external:
       name: users
-  default:
+  admin:
