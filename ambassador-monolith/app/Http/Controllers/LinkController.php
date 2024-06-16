@@ -15,11 +15,6 @@ use Illuminate\Support\Str;
 
 class LinkController extends Controller
 {
-    public function __construct(private readonly UserService $service)
-    {
-
-    }
-
     /**
      * Index links method
      *
@@ -31,41 +26,5 @@ class LinkController extends Controller
         $links = Link::with('orders')->where('user_id', $id)->get();
 
         return LinkResource::collection($links);
-    }
-
-    /**
-     * Store links method
-     *
-     * @param Request $request
-     * @return Model|Link
-     * @throws Exception
-     */
-    public function store(Request $request): Model|Link
-    {
-        $user = $this->service->profile();
-
-        $link = Link::create([
-            'user_id' => $user['id'],
-            'code' => Str::random(6)
-        ]);
-
-        $linkProducts = [];
-
-        foreach ($request->input('products') as $product_id) {
-            $linkProduct = LinkProduct::create([
-                'link_id' => $link->id,
-                'product_id' => $product_id
-            ]);
-
-            $linkProducts[] = $linkProduct->toArray();
-        }
-
-        LinkCreatedJob::dispatch([
-            'link' => $link->toArray(),
-            'linkProducts' => $linkProducts,
-        ])
-            ->onQueue('checkout_topic');
-
-        return $link;
     }
 }
