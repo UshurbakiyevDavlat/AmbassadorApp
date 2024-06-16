@@ -102,6 +102,7 @@ class OrderController extends Controller
             $order['ambassador_revenue'] = $order->ambassador_revenue;
 
             OrderCompletedJob::dispatch($order->toArray())->onQueue('email_topic');
+            OrderCompletedJob::dispatch($order->toArray())->onQueue('ambassador_topic');
 
             return $source;
         } catch (Throwable $e) {
