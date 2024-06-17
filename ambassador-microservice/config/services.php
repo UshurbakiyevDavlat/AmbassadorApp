@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'internal' => [
+        'users' => [
+            'address' => env('INTERNAL_USER_MS', 'users-backend-ambassador:8000')
+        ]
+    ]
+
 ];
