@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y \
     libsasl2-modules \
     libssl-dev
 
+RUN pecl install -o -f redis \
+    && rm -rf /tmp/pear \
+    && docker-php-ext-enable redis
 
 RUN docker-php-ext-install pdo pdo_mysql
 RUN curl -sS https://getcomposer.org/installer | php -- \
