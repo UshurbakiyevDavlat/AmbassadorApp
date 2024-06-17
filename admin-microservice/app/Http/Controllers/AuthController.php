@@ -31,7 +31,7 @@ class AuthController extends Controller
         // what about validation errors??
         $user = $request->only('first_name', 'last_name', 'email', 'password')
             + [
-                'is_admin' => $request->path() === 'api/admin/register' ? 1 : 0
+                'is_admin' => 1
             ];
 
         $this->service->register($user);
@@ -48,9 +48,7 @@ class AuthController extends Controller
      */
     public function login(Request $request): \Illuminate\Http\Response|Application|ResponseFactory
     {
-
-        $scope = $request->path() === 'api/admin/login' ? 'admin' : 'ambassador';
-        $data = $request->only('email', 'password') + compact('scope');
+        $data = $request->only('email', 'password') + ['scope' => 'admin'];
         $response = $this->service->login($data);
 
         if (!$response['jwt'] ?? true) {

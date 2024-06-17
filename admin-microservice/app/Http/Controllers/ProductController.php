@@ -33,6 +33,7 @@ class ProductController extends Controller
     {
         $product = Product::create($request->only('title', 'description', 'image', 'price'));
 
+        ProductCreatedJob::dispatch($product->toArray())->onQueue('admin_topic');
         ProductCreatedJob::dispatch($product->toArray())->onQueue('checkout_topic');
 
         return response($product, Response::HTTP_CREATED);
@@ -60,6 +61,7 @@ class ProductController extends Controller
     {
         $product->update($request->only('title', 'description', 'image', 'price'));
 
+        ProductUpdatedJob::dispatch($product->toArray())->onQueue('admin_topic');
         ProductUpdatedJob::dispatch($product->toArray())->onQueue('checkout_topic');
 
         return response($product, Response::HTTP_ACCEPTED);
@@ -75,6 +77,7 @@ class ProductController extends Controller
     {
         $product->delete();
 
+        ProductDeletedJob::dispatch(['id' => $product['id']])->onQueue('admin_topic');
         ProductDeletedJob::dispatch(['id' => $product['id']])->onQueue('checkout_topic');
 
         return response(null, Response::HTTP_NO_CONTENT);

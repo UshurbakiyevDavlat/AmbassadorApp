@@ -27,6 +27,14 @@ services:
     volumes:
       - ./storage/dbdata:/var/lib/mysql
 
+  admin_queue:
+    build: .
+    container_name: admin-queue
+    networks:
+      - admin
+    volumes:
+      - .:/app
+    command: 'php artisan queue:work'
 
 networks:
   users:
