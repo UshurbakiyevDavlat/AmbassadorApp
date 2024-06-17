@@ -179,12 +179,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UshurbakiyevDavlat/user-ambassador-package.git",
-                "reference": "15be9947d62b19dccd69f8c07995238c8fb74095"
+                "reference": "dd49495216713b67cbc9cbac36861493e26fa283"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UshurbakiyevDavlat/user-ambassador-package/zipball/15be9947d62b19dccd69f8c07995238c8fb74095",
-                "reference": "15be9947d62b19dccd69f8c07995238c8fb74095",
+                "url": "https://api.github.com/repos/UshurbakiyevDavlat/user-ambassador-package/zipball/dd49495216713b67cbc9cbac36861493e26fa283",
+                "reference": "dd49495216713b67cbc9cbac36861493e26fa283",
                 "shasum": ""
             },
             "require": {
@@ -209,7 +209,7 @@
                 "source": "https://github.com/UshurbakiyevDavlat/user-ambassador-package/tree/main",
                 "issues": "https://github.com/UshurbakiyevDavlat/user-ambassador-package/issues"
             },
-            "time": "2024-05-29T12:14:53+00:00"
+            "time": "2024-06-17T08:18:18+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
