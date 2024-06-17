@@ -66,6 +66,12 @@ class LinkController extends Controller
         ])
             ->onQueue('checkout_topic');
 
+        LinkCreatedJob::dispatch([
+            'link' => $link->toArray(),
+            'linkProducts' => $linkProducts,
+        ])
+            ->onQueue('admin_topic');
+
         return $link;
     }
 }
